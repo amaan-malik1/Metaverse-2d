@@ -71,10 +71,11 @@ describe("Authentication", () => {
   });
 });
 
-
-describe('User infoo endpoints', () => {
+describe("User infoo endpoints", () => {
   //middleware for auth
-  beforeAll(()=>{})
+  beforeAll(() => {});
 
-
- })
+  test("test 1", ()=>{
+    
+  })
+});
