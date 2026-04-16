@@ -9,7 +9,6 @@ export const signup = async (req: Request, res: Response) => {
 
   const userExist = await 
 
-
 };
 
 //signin controller
