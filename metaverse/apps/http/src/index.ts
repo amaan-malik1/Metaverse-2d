@@ -1,7 +1,14 @@
 import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
+import authRouter from "./routes/auth.route.js";
+import userRouter from "./routes/user.route.js";
+import adminRouter from "./routes/admin.route.js";
+import spaceRouter from "./routes/space.route.js";
 
-const PORT = 3000;
+dotenv.config();
+
+const PORT = process.env.PORT || 3001;
 
 const app = express();
 app.use(express.json());
@@ -13,8 +20,11 @@ app.use(
   }),
 );
 
-
-
+/// route api's
+app.use("/api/v1", authRouter);
+app.use("/api/v1/user", userRouter);
+app.use("/api/v1/admin", adminRouter);
+app.use("/api/v1/space", spaceRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running at ${PORT}`);
