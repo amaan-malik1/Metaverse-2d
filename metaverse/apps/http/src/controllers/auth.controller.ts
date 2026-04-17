@@ -7,7 +7,7 @@ export const signup = async (req: Request, res: Response) => {
     return false;
   };
 
-  const userExist = await 
+  // const userExist = await ;
 
 };
 

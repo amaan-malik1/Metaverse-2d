@@ -5,6 +5,7 @@ import authRouter from "./routes/auth.route.js";
 import userRouter from "./routes/user.route.js";
 import adminRouter from "./routes/admin.route.js";
 import spaceRouter from "./routes/space.route.js";
+import {prismaClient} from "@repo/db/prismaClient";
 
 dotenv.config();
 
