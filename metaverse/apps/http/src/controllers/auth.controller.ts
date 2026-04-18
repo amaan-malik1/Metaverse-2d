@@ -17,11 +17,16 @@ export const signup = async (req: Request, res: Response) => {
   try {
     const hashedPassword = await bcrypt.hash(parsedData.data.password, 10);
 
+    const avatarIndex = Math.floor(Math.random() * 1000); // generate a number between 1-100
+
+    const randomAvatar: String = `https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarIndex}`;
+
     const user = await prismaClient.user.create({
       data: {
         email: parsedData.data.email,
         password: hashedPassword,
         role: parsedData.data.type === "admin" ? "Admin" : "User",
+        avatarId: randomAvatar.toString(),
       },
     });
 
@@ -78,13 +83,39 @@ export const signin = async (req: Request, res: Response) => {
     };
 
     if (!JWT_SECRET_KEY) {
-      return;
+      return console.log("Internal server error");
     }
-    const token = jwt.sign(payload, JWT_SECRET_KEY);
+    const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: "7d" });
+
+    res.cookie("jwt", token, {
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
+    });
 
     res.status(200).json({
       message: "Login succeed",
       token,
     });
-  } catch (error) {}
+  } catch (error) {
+    res.status(403).json({
+      message: "Internal server error in login controller",
+    });
+    console.log("Error while login: ", error);
+  }
+};
+
+export const logout = (req: Request, res: Response) => {
+  try {
+    res.clearCookie("jwt");
+    res.status(200).json({
+      message: "Logout success!",
+    });
+  } catch (error) {
+    res.status(403).json({
+      message: "Internal server error while logout",
+    });
+    console.log("Error while logout: ", error);
+  }
 };

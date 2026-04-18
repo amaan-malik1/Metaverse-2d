@@ -4,7 +4,7 @@ BACKEND_URL = "http://localhost:3000";
 
 describe("Authentication", () => {
   //checking the signup work
-  test("User's able to sign up only once with same cred: ", async () => {
+  test("User's able to sign up only once: ", async () => {
     const email = "abeermalik363@gmail.com";
     const password = "amaaaaaaaaaaaanmalik";
     const res = await axios.post(`${BACKEND_URL}/api/v1/signup`, {
@@ -71,11 +71,14 @@ describe("Authentication", () => {
   });
 });
 
-describe("User infoo endpoints", () => {
+describe("User metadata endpoints", () => {
   //middleware for auth
   beforeAll(() => {});
 
-  test("test 1", ()=>{
+  test("test 1", async() => {
+    const email = "amikm1077@gmail.com"
+    const pass = "278eyxs73"
     
-  })
+
+  });
 });
