@@ -77,15 +77,19 @@ export const signin = async (req: Request, res: Response) => {
       });
     }
 
-    let payload = {
-      userId: user.id,
-      role: user.role,
-    };
+    // let payload =;
 
     if (!JWT_SECRET_KEY) {
       return console.log("Internal server error");
     }
-    const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: "7d" });
+    const token = jwt.sign(
+      {
+        userId: user.id,
+        role: user.role,
+      },
+      JWT_SECRET_KEY,
+      { expiresIn: "7d" },
+    );
 
     res.cookie("jwt", token, {
       maxAge: 7 * 24 * 60 * 60 * 1000,
