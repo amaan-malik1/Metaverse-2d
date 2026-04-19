@@ -14,33 +14,33 @@ export const signup = async (req: Request, res: Response) => {
       message: "Validation fail",
     });
   }
+  console.log("JWT_SECRET_KEY: ", JWT_SECRET_KEY);
+
   try {
     const hashedPassword = await bcrypt.hash(parsedData.data.password, 10);
-
-    const avatarIndex = Math.floor(Math.random() * 1000); // generate a number between 1-100
-
-    const randomAvatar: String = `https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarIndex}`;
+    console.log("hashed pass:", hashedPassword);
 
     const user = await prismaClient.user.create({
       data: {
         email: parsedData.data.email,
         password: hashedPassword,
         role: parsedData.data.type === "admin" ? "Admin" : "User",
-        avatarId: randomAvatar.toString(),
       },
     });
 
+    console.log("user creation: ", user.email);
+
     res.json({
       userId: user.id,
+      user,
       message: "Signup successfully",
     });
   } catch (error) {
     res.status(400).json({
-      message: "User already existed!",
+      message: "User already existed hereee!",
     });
+    console.log("Error in signup controller: ", error);
   }
-
-  // const userExist = await ;
 };
 
 //signin controller
