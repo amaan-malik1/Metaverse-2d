@@ -1,6 +1,49 @@
-import axios from "axios";
+const axios = require("axios");
 
 BACKEND_URL = "http://localhost:3000";
+
+const axios2 = {
+  post: async (...agr) => {
+    try {
+      const res = await axios2.post(...agr);
+      return res;
+    } catch (error) {
+      return error.response;
+    }
+  },
+  post: async (...agr) => {
+    try {
+      const res = await axios2.post(...agr);
+      return res;
+    } catch (error) {
+      return error.response;
+    }
+  },
+  get: async (...agr) => {
+    try {
+      const res = await axios2.get(...agr);
+      return res;
+    } catch (error) {
+      return error.response;
+    }
+  },
+  put: async (...agr) => {
+    try {
+      const res = await axios2.put(...agr);
+      return res;
+    } catch (error) {
+      return error.response;
+    }
+  },
+  delete: async (...agr) => {
+    try {
+      const res = await axios2.delete(...agr);
+      return res;
+    } catch (error) {
+      return error.response;
+    }
+  },
+};
 
 describe("Authentication", () => {
   //checking the signup work
@@ -71,14 +114,12 @@ describe("Authentication", () => {
   });
 });
 
-describe("User metadata endpoints", () => {
-  //middleware for auth
-  beforeAll(() => {});
+// describe("User metadata endpoints", () => {
+//   //middleware for auth
+//   beforeAll(() => {});
 
-  test("test 1", async() => {
-    const email = "amikm1077@gmail.com"
-    const pass = "278eyxs73"
-    
-
-  });
-});
+//   test("test 1", async () => {
+//     const email = "amikm1077@gmail.com";
+//     const pass = "278eyxs73";
+//   });
+// });
