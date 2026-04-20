@@ -10,33 +10,29 @@ export const userProtect = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const token = req.headers.token;
+  const header = req.headers.authorization;
+  const token = header?.split(" ")[1];
+
+  if (!token) {
+    return res.status(403).json({
+      message: "Unauthorized - No token provided",
+    });
+  }
+
+  if (!JWT_SECRET) {
+    return res.status(404).json({
+      message: "Token not found!",
+    });
+  }
 
   try {
-    if (!token) {
-      return res.status(403).json({
-        message: "Unauthorized - No token provided",
-      });
-    }
-
-    if (!JWT_SECRET) {
-      return res.status(404).json({
-        message: "Token not found!",
-      });
-    }
-    
-    //@ts-ignore
-    const decoded = jwt.verify(token, JWT_SECRET);
-
-    if (!decoded) {
-      return res.status(203).json({
-        message: "Invalid or token expire",
-      });
-    }
+    const decoded = jwt.verify(token, JWT_SECRET) as {
+      role: string;
+      userId: string;
+    };
 
     const userPresent = await prismaClient.user.findUnique({
       where: {
-        //@ts-ignore
         id: decoded.userId,
       },
     });
@@ -46,6 +42,7 @@ export const userProtect = async (
       });
     }
 
+    req.userId = decoded.userId; 
     next();
   } catch (error) {}
 };

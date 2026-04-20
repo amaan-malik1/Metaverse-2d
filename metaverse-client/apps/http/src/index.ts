@@ -1,12 +1,12 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import authRouter from "./routes/auth.route.js";
 import userRouter from "./routes/user.route.js";
 import adminRouter from "./routes/admin.route.js";
 import spaceRouter from "./routes/space.route.js";
 
-dotenv.config();
 
 const PORT = process.env.PORT || 3001;
 
