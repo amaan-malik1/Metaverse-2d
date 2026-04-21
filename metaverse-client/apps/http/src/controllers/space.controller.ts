@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
-import { CreateMapSchema } from "../types/index.js";
+import { AddElementSchema, CreateMapSchema } from "../types/index.js";
 import { prismaClient } from "@repo/db/prismaClient";
+import { success } from "zod/v4";
 
 // creating space
 export const createSpace = async (req: Request, res: Response) => {
@@ -29,22 +30,20 @@ export const createSpace = async (req: Request, res: Response) => {
 
 // gettting my spaces
 export const allMySpace = async (req: Request, res: Response) => {
-  const spaceId = req.query;
   try {
-    const mySpace = await prismaClient.space.findUnique({
+    const mySpaces = await prismaClient.space.findMany({
       where: {
-        id: spaceId,
         creatorId: req.userId,
       },
     });
 
     res.status(200).json({
       message: "Fetched all my spaces",
-      mySpace,
+      mySpaces,
     });
   } catch (error) {
     res.status(400).json({
-      message: "INternal server error",
+      message: "Internal server error",
     });
     console.log("Error while fetching my spaces: ", error);
   }
@@ -72,8 +71,45 @@ export const deleteSpace = async (req: Request, res: Response) => {
   }
 };
 
-//get space
-export const getSpace = async (req: Request, res: Response) => {};
-export const addElement = async (req: Request, res: Response) => {};
+//get space with id
+export const getSpace = async (req: Request, res: Response) => {
+  ``;
+  const spaceId = req.query;
+  try {
+    const space = await prismaClient.space.findUnique({
+      where: {
+        id: spaceId,
+        creatorId: req.userId,
+      },
+    });
+    res.status(200).json({
+      success: true,
+      space,
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "Internal server error in space with id",
+    });
+    console.log("Error while fetching space with id: ", error);
+  }
+};
+
+//adding element
+export const addElement = async (req: Request, res: Response) => {
+  const parsedData = AddElementSchema.safeParse(req.body);
+
+  try {
+    await prismaClient.element.create({
+      where: {
+        id: parsedData.data?.spaceId,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "Internal  server error in Add element",
+    });
+    console.log("Error while Adding element: ", error);
+  }
+};
 export const deleteElement = async (req: Request, res: Response) => {};
 export const allElemets = async (req: Request, res: Response) => {};
