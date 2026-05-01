@@ -73,7 +73,6 @@ export const deleteSpace = async (req: Request, res: Response) => {
 
 //get space with id
 export const getSpace = async (req: Request, res: Response) => {
-  ``;
   const spaceId = req.query;
   try {
     const space = await prismaClient.space.findUnique({
@@ -97,7 +96,6 @@ export const getSpace = async (req: Request, res: Response) => {
 //adding element
 export const addElement = async (req: Request, res: Response) => {
   const parsedData = AddElementSchema.safeParse(req.body);
-
   try {
     await prismaClient.element.create({
       where: {
@@ -111,5 +109,12 @@ export const addElement = async (req: Request, res: Response) => {
     console.log("Error while Adding element: ", error);
   }
 };
-export const deleteElement = async (req: Request, res: Response) => {};
+export const deleteElement = async (req: Request, res: Response) => {
+  const elementId = req.query;
+  try {
+    await prismaClient.element
+  } catch (error) {
+    
+  }
+};
 export const allElemets = async (req: Request, res: Response) => {};
